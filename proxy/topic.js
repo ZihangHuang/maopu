@@ -6,7 +6,7 @@ const isValid = require('./index').isValid
 // const tools = require('../common/tools')
 
 /**
- * 根据帖子ID获取帖子的所有详情（包括回复列表等）
+ * 根据帖子ID获取帖子详情
  * - topic, 帖子
  * - author, 作者
  * @param {String} id 帖子ID
@@ -32,7 +32,6 @@ exports.getTopicCount = (query = { deleted: false }) => Topic.countDocuments(que
  * @return {[Array]}
  */
 exports.getTopicList = async (query = { deleted: false }, skip = 0, pageSize = 10) => {
-  // let topics = await Topic.find(query).skip(skip).limit(pageSize)
   let topics = await Topic.find(query).populate('author', {
     _id: 1,
     username: 1,

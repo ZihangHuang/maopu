@@ -29,15 +29,14 @@ var traceMQuery = function(method, info, query) {
     loggerTrace.debug('mongoose - ', infos.join(' '))
   }
 }
-
 mongoose.Mongoose.prototype.mquery.setGlobalTraceFunction(traceMQuery)
 
 
 // mongoose.set('debug', (collectionName, method, query, doc) => {
 //   var infos = []
 //   infos.push(collectionName + '.' + method)
-//   infos.push(JSON.stringify(query))
-//   infos.push(JSON.stringify(doc))
+//   infos.push('\nquery: ' + JSON.stringify(query))
+//   infos.push('\ndoc: ' + JSON.stringify(doc))
 //   loggerTrace.debug('mongoose - ', infos.join(' '))
 // })
 

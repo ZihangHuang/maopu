@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const BaseModel = require('./base-model')
+// const BaseModel = require('./base-model')
 const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
 const tools = require('../common/tools')
@@ -14,13 +14,13 @@ const tools = require('../common/tools')
 const MessageSchema = new Schema({
   type: { type: String },
   userId: { type: ObjectId }, //此消息归属者的用户id
-  authorId: { type: ObjectId }, //帖子作者id
+  // authorId: { type: ObjectId }, //帖子作者id
   topic: { type: ObjectId, ref: 'Topic' }, //帖子信息
-  replyId: { type: ObjectId }, //回复id
+  reply: { type: ObjectId, ref: 'Reply' }, //回复
   hasRead: { type: Boolean, default: false },
   createTime: { type: String, default: tools.setFormatDate(new Date()) },
 })
-MessageSchema.plugin(BaseModel)
+// MessageSchema.plugin(BaseModel)
 MessageSchema.index({ masterId: 1, hasRead: -1, createTime: -1 })
 
 module.exports = mongoose.model('Message', MessageSchema)

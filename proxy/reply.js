@@ -5,6 +5,7 @@ const Reply = models.Reply
 const Topic = models.Topic
 // const userProxy = require('./user')
 // const topicProxy = require('./topic')
+const messageProxy = require('./message')
 const isValid = require('./index').isValid
 const tools = require('../common/tools')
 
@@ -13,10 +14,19 @@ const tools = require('../common/tools')
  * @param {String} id 回复ID
  * @return {Object}
  */
-const getReplyById = _id => {
-  if(!isValid(_id)) return
-  
-  return Reply.findOne({ _id }).populate('author')
+const getReplyById = (_id, all) => {
+  if (!isValid(_id)) return
+
+  if (all) {
+    return Reply.findOne({ _id }).populate('author')
+  } else {
+    return Reply.findOne({ _id }).populate('author', {
+      _id: 1,
+      username: 1,
+      nickname: 1,
+      avatar: 1
+    })
+  }
 }
 exports.getReplyById = getReplyById
 
@@ -26,14 +36,17 @@ exports.getReplyById = getReplyById
  * @return {Object}
  */
 exports.getRepliesByTopicId = async (topicId, skip = 0, pageSize = 10) => {
-  if(!isValid(topicId)) return
+  if (!isValid(topicId)) return
 
-  let replies = await Reply.find({ topicId }, '', {sort: 'create_at'}).populate('author', {
-    _id: 1,
-    username: 1,
-    nickname: 1,
-    avatar: 1
-  }).skip(skip).limit(pageSize)
+  let replies = await Reply.find({ topicId }, '', { sort: 'create_at' })
+    .populate('author', {
+      _id: 1,
+      username: 1,
+      nickname: 1,
+      avatar: 1
+    })
+    .skip(skip)
+    .limit(pageSize)
   if (!replies.length === 0) return
 
   return replies
@@ -42,7 +55,7 @@ exports.getRepliesByTopicId = async (topicId, skip = 0, pageSize = 10) => {
 /**
  * 根据帖子ID，获取回复的数量
  */
-exports.getReplyCountByTopicId = (topicId) => Reply.countDocuments({ topicId })
+exports.getReplyCountByTopicId = topicId => Reply.countDocuments({ topicId })
 
 /**
  * 创建并保存一条回复信息
@@ -52,14 +65,20 @@ exports.getReplyCountByTopicId = (topicId) => Reply.countDocuments({ topicId })
  * @param {String} [replyId] 回复ID，当二级回复时设定该值
  * @param {String} [replyAuthor] 二级回复对应的一级回复者信息，当二级回复时设定该值
  */
-exports.addReply = async function(content, topicId, authorId, replyId, replyAuthor) {
+exports.addReply = async function(
+  content,
+  topicId,
+  authorId,
+  replyId,
+  replyAuthor
+) {
   let data = {
     // _id: new ObjectId(),
     content: content,
     topicId: topicId,
-    author: authorId,
-    createTime: tools.setFormatDate(new Date())
+    author: authorId
   }
+  //是否是二级回复
   if (replyId) {
     data.replyId = replyId
   }
@@ -71,18 +90,41 @@ exports.addReply = async function(content, topicId, authorId, replyId, replyAuth
   let reply = new Reply(data)
 
   let res = await reply.save()
-  if(!res) return
+  if (!res) return
 
-  let res2 = await Topic.updateOne({_id: topicId}, {
-    '$set': {
-      lastReplyTime: tools.setFormatDate(new Date()),
-    },
-    '$inc': {
-      replyCount: 1
+  let res2 = await Topic.updateOne(
+    { _id: topicId },
+    {
+      $set: {
+        lastReplyTime: tools.setFormatDate(new Date())
+      },
+      $inc: {
+        replyCount: 1
+      }
     }
-  })
+  )
   //{ n: 1, nModified: 1, ok: 1 }
-  if(res2.ok) return getReplyById(res._id)
+  if (!res2.ok) return
+
+  //添加消息
+  let type, res3
+  //二级回复id则传入对应的一级回复者id
+  if (replyId && replyAuthor) {
+    type = 'reply2'
+    res3 = await messageProxy.addMessage(
+      type,
+      topicId,
+      res._id,
+      replyAuthor._id
+    )
+  } else {
+    type = 'reply'
+    res3 = await messageProxy.addMessage(type, topicId, res._id)
+  }
+
+  if (!res3) return
+
+  return getReplyById(res._id)
 }
 
 /**
@@ -91,24 +133,27 @@ exports.addReply = async function(content, topicId, authorId, replyId, replyAuth
  * @return { Object } 结果
  */
 exports.removeReply = async _id => {
-  if(!isValid(_id)) return
+  if (!isValid(_id)) return
 
   let reply = await Reply.findOne({ _id })
-  if(!reply) return
+  if (!reply) return
 
   let topicId = reply.topicId
   //let res = await Reply.updateOne({ _id }, { $set: { deleted: true } })
   let res = reply.remove()
-  if(!res) return
-    
-  let res2 = await Topic.updateOne({_id: topicId}, {
-    '$set': {
-      lastReplyTime: tools.setFormatDate(new Date()),
-    },
-    '$inc': {
-      replyCount: -1
+  if (!res) return
+
+  let res2 = await Topic.updateOne(
+    { _id: topicId },
+    {
+      $set: {
+        lastReplyTime: tools.setFormatDate(new Date())
+      },
+      $inc: {
+        replyCount: -1
+      }
     }
-  })
+  )
 
   return res2
 }

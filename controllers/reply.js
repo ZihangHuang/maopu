@@ -25,7 +25,7 @@ exports.addReply = async ctx => {
   })
 }
 
-exports.getReplyByTopicId = ctx =>
+exports.getRepliesByTopicId = ctx =>
   getListAndCount(ctx, Reply.getRepliesByTopicId, Reply.getReplyCountByTopicId)(
     ctx.request.body.topicId,
     ctx.request.body.topicId

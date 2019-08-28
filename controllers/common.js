@@ -26,6 +26,7 @@ exports.getListAndCount = (ctx, getList, getCount) => {
         data: {}
       })
     }
+    
     return (ctx.body = {
       code: 1,
       msg: 'success',

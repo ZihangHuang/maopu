@@ -8,12 +8,11 @@ const ReplySchema = new Schema({
   content: { type: String },
   topicId: { type: ObjectId },
   author: { type: ObjectId, ref: 'User' },
-  replyId: { type: ObjectId }, //当有replyId时，为二级回复
+  replyId: { type: ObjectId }, //二级回复对应的一级回复id,当有replyId时，为二级回复
   replyAuthor: { type: Object }, //二级回复对应的一级回复者信息
   createTime: { type: String, default: tools.setFormatDate(new Date()) },
   //updateTime: { type: String, default: tools.setFormatDate(new Date()) },
-  contentIsHtml: { type: Boolean },
-  //ups: [ObjectId],
+  contentIsHtml: { type: Boolean }
 })
 
 //ReplySchema.plugin(BaseModel)
