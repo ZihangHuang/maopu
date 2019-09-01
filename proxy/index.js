@@ -8,3 +8,5 @@ exports.User = require('./user')
 exports.Topic = require('./topic')
 exports.Reply = require('./reply')
 exports.Message = require('./message')
+
+//update返回值{ n: 2, nModified: 2, ok: 1 }

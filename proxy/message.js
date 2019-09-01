@@ -108,3 +108,9 @@ exports.addMessage = async (type, topicId, replyId, replyAuthorId) => {
 
   return message.save()
 }
+
+//设置所有消息为已读
+exports.setMessagesToHasRead = userId => {
+  if (!isValid(userId)) return
+  return Message.updateMany({ userId }, { hasRead: true })
+}

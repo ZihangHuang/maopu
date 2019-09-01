@@ -10,16 +10,37 @@ exports.getMessagesByUserId = ctx =>
 exports.getUnReadMessagesCount = async ctx => {
   let res = await Message.getUnReadMessagesCount(ctx.request.body.userId)
 
+  return (ctx.body = {
+    code: 1,
+    msg: 'success',
+    data: {
+      count: res
+    }
+  })
+}
+
+//设置所有消息为已读
+exports.setMessagesToHasRead = async ctx => {
+  let res = await Message.setMessagesToHasRead(ctx.request.body.userId)
+
   if (res) {
-    return (ctx.body = {
-      code: 1,
-      msg: 'success',
-      data: res
-    })
+    if (res.nModified > 0) {
+      return (ctx.body = {
+        code: 1,
+        msg: 'success',
+        data: {}
+      })
+    } else {
+      return (ctx.body = {
+        code: 0,
+        msg: '当前无未读消息',
+        data: {}
+      })
+    }
   }
   return (ctx.body = {
     code: 0,
-    msg: '暂无数据',
+    msg: '设置失败',
     data: {}
   })
 }

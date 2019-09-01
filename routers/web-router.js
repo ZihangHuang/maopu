@@ -38,6 +38,7 @@ router.post('/reply/delete', isJwtAuthenticated, reply.deleteReply)
 //消息
 router.post('/message/list', isJwtAuthenticated, message.getMessagesByUserId)
 router.post('/message/list/unread', isJwtAuthenticated, message.getUnReadMessagesCount)
+router.post('/message/set/hasread', isJwtAuthenticated, message.setMessagesToHasRead)
 
 //七牛
 router.post('/base/getQiniuToken', isJwtAuthenticated, qiniuHandle.getQiniuToken)
