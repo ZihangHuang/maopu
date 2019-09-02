@@ -32,16 +32,17 @@ exports.updateUser = async ctx => {
   body.password = encrypt(body.password)
 
   let res = await User.updateUser(body)
-  if (res) {
+
+  if (res && res.ok) {
     ctx.body = {
       code: 1,
       msg: '修改成功',
       data: {}
     }
-  }else {
+  }else { //undefined
     ctx.body = {
       code: 0,
-      msg: '无此用户',
+      msg: '修改失败或无此用户',
       data: {}
     }
   }

@@ -9,4 +9,5 @@ exports.Topic = require('./topic')
 exports.Reply = require('./reply')
 exports.Message = require('./message')
 
-//update返回值{ n: 2, nModified: 2, ok: 1 }
+//update返回值：{ n: 2, nModified: 2, ok: 1 }
+//新增返回值：{ __v: 0, _id: 123, ... }

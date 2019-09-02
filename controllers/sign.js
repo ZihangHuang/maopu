@@ -32,9 +32,12 @@ exports.register = async ctx => {
   let body = ctx.request.body
   if (!body.username) return (ctx.body = {code: -10, msg: '缺少用户名', data: {}})
   if (!body.password) return (ctx.body = {code: -10, msg: '缺少密码', data: {}})
+
+  if(body.username.length < 4) return ctx.body = {code: -2, msg: '用户名不能少于4位', data: {}}
+  if(body.password.length < 6) return ctx.body = {code: -2, msg: '密码不能少于6位', data: {}}
   
-  let oldUser = await User.getUserByUsername(body.username, true)
-  if(oldUser && oldUser.length > 0) {
+  let oldUsers = await User.getUserByUsername(body.username, true)
+  if(oldUsers && oldUsers.length > 0) {
     return ctx.body = {code: -2, msg: '此用户名已被占用', data: {}}
   }
 
@@ -46,6 +49,7 @@ exports.register = async ctx => {
     reputation: 1
   }
   let res = await User.addUser(userInfo)
+  
   if(res) {
     ctx.body = {code: 1, msg: '注册成功', data: {}}
   }else{
