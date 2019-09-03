@@ -9,7 +9,8 @@ const isValid = require('./index').isValid
  * 根据帖子ID获取帖子详情
  * - topic, 帖子
  * - author, 作者
- * @param {String} id 帖子ID
+ * @param {ObjectId} id 帖子ID
+ * @return { Promise<Object> }
  */
 exports.getTopicFullById = async _id => {
   if(!isValid(_id)) return
@@ -29,7 +30,7 @@ exports.getTopicCount = (query = { deleted: false }) => Topic.countDocuments(que
  * @param  {Object} query    [查询条件]
  * @param  {Number} skip     [第几条]
  * @param  {Number} pageSize [每页条数]
- * @return {[Array]}
+ * @return { Promise<Array> }
  */
 exports.getTopicList = async (query = { deleted: false }, skip = 0, pageSize = 10) => {
   let topics = await Topic.find(query).populate('author', {
@@ -52,7 +53,7 @@ exports.getTopicList = async (query = { deleted: false }, skip = 0, pageSize = 1
 /**
  * 创建帖子
  * @param {Object} topicInfo 帖子信息
- * @return { Promise } 结果
+ * @return { Promise<Object> }
  */
 exports.addTopic = topicInfo => {
   let topic = new Topic(topicInfo)
@@ -62,7 +63,7 @@ exports.addTopic = topicInfo => {
 /**
  * 修改帖子
  * @param {Object} topicInfo 帖子信息
- * @return { Promise } 结果
+ * @return { Promise<Object> }
  */
 exports.updateTopic = topicInfo => {
   if(!isValid(topicInfo._id)) return
@@ -74,8 +75,8 @@ exports.updateTopic = topicInfo => {
 
 /**
  * 删除帖子
- * @param {Number} 帖子id
- * @return { Promise } 结果
+ * @param {ObjectId} 帖子id
+ * @return { Promise<Object> }
  */
 exports.removeTopic = _id => {
   if(!isValid(_id)) return

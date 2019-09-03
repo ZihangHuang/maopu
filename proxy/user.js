@@ -5,14 +5,14 @@ const isValid = require('./index').isValid
 /**
  * 根据用户名查找用户
  * @param {String} username 用户名
- * @return { Promise } 结果
+ * @return { Promise<Object> }
  */
 exports.getUserByUsername = (username, isAll) => isAll ? User.find({'username': username}) : User.findOne({'username': username})
 
 /**
  * 根据用户ID，查找用户
- * @param {String} id 用户ID
- * @return { Promise } 结果
+ * @param {ObjectId} id 用户ID
+ * @return { Promise<Object> }
  */
 exports.getUserById = (_id, isAll) => {
   if(!isValid(_id)) return
@@ -22,15 +22,15 @@ exports.getUserById = (_id, isAll) => {
 
 /**
  * 根据用户ID列表，获取一组用户
- * @param {Array} ids 用户ID列表
- * @return { Promise } 结果
+ * @param {Array<ObjectId>} ids 用户ID列表
+ * @return { Promise<Object> }
  */
 exports.getUsersByIds = ids => User.find({'_id': {'$in': ids}}, { password: 0 })
 
 /**
  * 创建用户
  * @param {Object} userInfo 用户信息
- * @return { Promise } 结果
+ * @return { Promise<Object> }
  */
 exports.addUser = userInfo => {
   let user = new User(userInfo)
@@ -40,7 +40,7 @@ exports.addUser = userInfo => {
 /**
  * 修改用户
  * @param {Object} userInfo 用户信息
- * @return { Promise } 结果
+ * @return { Promise<Object> }
  */
 exports.updateUser = userInfo => {
   if(userInfo._id) {

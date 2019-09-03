@@ -11,8 +11,8 @@ const tools = require('../common/tools')
 
 /**
  * 根据回复ID，获取回复
- * @param {String} id 回复ID
- * @return {Object}
+ * @param {ObjectId} id 回复ID
+ * @return { Promise<Object> }
  */
 const getReplyById = (_id, all) => {
   if (!isValid(_id)) return
@@ -32,8 +32,8 @@ exports.getReplyById = getReplyById
 
 /**
  * 根据帖子ID，获取回复
- * @param {String} id 回复ID
- * @return {Object}
+ * @param {ObjectId} id 回复ID
+ * @return { Promise<Array> }
  */
 exports.getRepliesByTopicId = async (topicId, skip = 0, pageSize = 10) => {
   if (!isValid(topicId)) return
@@ -60,10 +60,11 @@ exports.getReplyCountByTopicId = topicId => Reply.countDocuments({ topicId })
 /**
  * 创建并保存一条回复信息
  * @param {String} content 回复内容
- * @param {String} topicId 帖子ID
- * @param {String} authorId 回复作者ID
- * @param {String} [replyId] 回复ID，当二级回复时设定该值
- * @param {String} [replyAuthor] 二级回复对应的一级回复者信息，当二级回复时设定该值
+ * @param {ObjectId} topicId 帖子ID
+ * @param {ObjectId} authorId 回复作者ID
+ * @param {ObjectId} [replyId] 回复ID，当二级回复时设定该值
+ * @param {Object} [replyAuthor] 二级回复对应的一级回复者信息，当二级回复时设定该值
+ * @return { Promise<Object> }
  */
 exports.addReply = async function(
   content,
@@ -129,8 +130,8 @@ exports.addReply = async function(
 
 /**
  * 删除回复
- * @param {Number} 回复id
- * @return { Object } 结果
+ * @param {ObjectId} 回复id
+ * @return { Promise<Object> }
  */
 exports.removeReply = async _id => {
   if (!isValid(_id)) return

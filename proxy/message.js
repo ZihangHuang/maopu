@@ -6,8 +6,8 @@ const replyProxy = require('./reply')
 
 /**
  * 根据用户ID，获取未读消息的数量
- * @param {String} id 用户ID
- * @return {Promise} 获取消息数量
+ * @param {ObjectId} id 用户ID
+ * @return { Promise<Number> }
  */
 exports.getUnReadMessagesCount = userId => {
   if (!isValid(userId)) return
@@ -17,8 +17,8 @@ exports.getUnReadMessagesCount = userId => {
 
 /**
  * 根据用户ID，获取所有消息的数量
- * @param {String} id 用户ID
- * @return {Promise} 获取消息数量
+ * @param {ObjectId} id 用户ID
+ * @return { Promise<Number> }
  */
 exports.getMessagesCount = userId => {
   if (!isValid(userId)) return
@@ -28,8 +28,8 @@ exports.getMessagesCount = userId => {
 
 /**
  * 根据用户ID，获取消息
- * @param {String} id 用户ID
- * @return {Object}
+ * @param {ObjectId} id 用户ID
+ * @return { Promise<Object> }
  */
 exports.getMessagesByUserId = async (userId, skip = 0, pageSize = 10) => {
   if (!isValid(userId)) return
@@ -71,8 +71,8 @@ exports.getMessagesByUserId = async (userId, skip = 0, pageSize = 10) => {
 
 /**
  * 根据消息Id获取消息
- * @param {String} id 消息ID
- * @return {Promise}
+ * @param {ObjectId} id 消息ID
+ * @return { Promise<Object> }
  */
 exports.getMessageById = _id => {
   if (!isValid(_id)) return
@@ -83,10 +83,11 @@ exports.getMessageById = _id => {
 
 /**
  * 新增消息
- * @param  {Boolean} type          [消息类型]
+ * @param  {String} type          [消息类型]
  * @param  {ObjectId} topicId       [主题id]
  * @param  {ObjectId} replyId       [回复id]
  * @param  {ObjectId} replyAuthorId [可选,二级回复时对应的一级回复者id, 当二级回复时设定该值]
+ * @return { Promise<Object> }
  */
 exports.addMessage = async (type, topicId, replyId, replyAuthorId) => {
   var message = new Message()
@@ -109,7 +110,11 @@ exports.addMessage = async (type, topicId, replyId, replyAuthorId) => {
   return message.save()
 }
 
-//设置所有消息为已读
+/**
+ * 设置所有消息为已读
+ * @param  { ObjectId } userId [用户id]
+ * @return { Promise<Object> }
+ */
 exports.setMessagesToHasRead = userId => {
   if (!isValid(userId)) return
   return Message.updateMany({ userId }, { hasRead: true })
