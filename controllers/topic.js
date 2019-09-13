@@ -1,14 +1,15 @@
 const { Topic } = require('../proxy')
-const { promiseAll } = require('../common/tools')
+// const { promiseAll } = require('../common/tools')
 const { getListAndCount } = require('./common')
 
 
 exports.getTopicList = ctx =>
-  getListAndCount(ctx, Topic.getTopicList, Topic.getTopicCount)({})
+  getListAndCount(ctx, Topic.getTopicList, Topic.getTopicCount)()
 
 exports.getTopicDetail = async ctx => {
   let body = ctx.request.body
   let data = await Topic.getTopicFullById(body._id)
+  
   if (!data) {
     return (ctx.body = {
       code: 0,

@@ -97,6 +97,7 @@ exports.addReply = async function(
     { _id: topicId },
     {
       $set: {
+        lastReply: res._id,
         lastReplyTime: tools.setFormatDate(new Date())
       },
       $inc: {
@@ -144,17 +145,22 @@ exports.removeReply = async _id => {
   let res = reply.remove()
   if (!res) return
 
-  let res2 = await Topic.updateOne(
-    { _id: topicId },
-    {
-      $set: {
-        lastReplyTime: tools.setFormatDate(new Date())
-      },
-      $inc: {
-        replyCount: -1
+  let res2 = await tools.promiseAll(
+    Topic.updateOne(
+      { _id: topicId },
+      {
+        $set: {
+          lastReplyTime: tools.setFormatDate(new Date())
+        },
+        $inc: {
+          replyCount: -1
+        }
       }
-    }
+    ),
+    messageProxy.removeMessageByReplyId(_id)
   )
 
-  return res2
+  if(res2.length < 2) return
+
+  return { ok: 1 }
 }

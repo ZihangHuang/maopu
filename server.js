@@ -12,17 +12,18 @@ require('./models')
 
 const app = new Koa()
 
+//记录请求
+app.use(requestLog())
+
+//异常处理
+app.use(exceptionHandle())
+
 //app.keys = ['secret key']
 app.use(bodyParser())
 // app.use(session({cookie: { secure: false, maxAge: 86400000 }},app))
 app.use(passport.initialize())
 //app.use(passport.session())
 
-//记录请求
-app.use(requestLog())
-
-//异常处理
-app.use(exceptionHandle())
 app.on('error', err => {
   loggerError.error(err)
 })

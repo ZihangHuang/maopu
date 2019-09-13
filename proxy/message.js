@@ -60,9 +60,11 @@ exports.getMessagesByUserId = async (userId, skip = 0, pageSize = 10) => {
   for(let i = 0, len = messages.length; i < len; i++) {
     let type = messages[i].type //消息类型
     if(type === 'reply2') { //type是reply2说明存储的是二级回复
-      let reply1Id = messages[i].reply.replyId //获取二级回复对应的一级回复id
-      let reply1 = await replyProxy.getReplyById(reply1Id) //一级回复信息
-      messages[i].reply1 = reply1
+      if(messages[i].reply) {
+        let reply1Id = messages[i].reply.replyId //获取二级回复对应的一级回复id
+        let reply1 = await replyProxy.getReplyById(reply1Id) //一级回复信息
+        messages[i].reply1 = reply1
+      }
     }
   }
 
@@ -118,4 +120,9 @@ exports.addMessage = async (type, topicId, replyId, replyAuthorId) => {
 exports.setMessagesToHasRead = userId => {
   if (!isValid(userId)) return
   return Message.updateMany({ userId }, { hasRead: true })
+}
+
+exports.removeMessageByReplyId = replyId => {
+  if (!isValid(replyId)) return
+  return Message.remove({ reply: replyId })
 }

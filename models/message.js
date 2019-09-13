@@ -21,6 +21,6 @@ const MessageSchema = new Schema({
   createTime: { type: String, default: tools.setFormatDate(new Date()) },
 })
 // MessageSchema.plugin(BaseModel)
-MessageSchema.index({ masterId: 1, hasRead: -1, createTime: -1 })
+MessageSchema.index({ hasRead: -1, createTime: -1 })
 
 module.exports = mongoose.model('Message', MessageSchema)

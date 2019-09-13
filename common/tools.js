@@ -47,8 +47,8 @@ exports.getRandom = getRandom
 
 /**
  * [promiseAll 并发操作]
- * @param  {...[Promise]} promises
- * @return {[Arrat]}
+ * @param  {...Promise} promises
+ * @return {Promise<Array>}
  */
 exports.promiseAll = function promiseAll(...promises) {
   return Promise.all(promises)
