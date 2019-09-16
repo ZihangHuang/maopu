@@ -22,8 +22,8 @@ const TopicSchema = new Schema({
   lock: { type: Boolean, default: false }, // 被锁定
   visitCount: { type: Number, default: 0 },
   collectCount: { type: Number, default: 0 },
-  createTime: { type: String, default: tools.setFormatDate(new Date()) },
-  updateTime: { type: String, default: tools.setFormatDate(new Date()) },
+  createTime: { type: String, default: tools.getFormatDate() },
+  updateTime: { type: String, default: tools.getFormatDate() },
   replyCount: { type: Number, default: 0 },
   lastReply: { type: ObjectId, ref: 'Reply' }, //最后一个回复
   lastReplyTime: { type: String },

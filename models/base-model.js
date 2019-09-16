@@ -3,11 +3,11 @@
  * http://mongoosejs.com/docs/plugins.html
  */
 var tools = require('../common/tools')
-//console.log(tools.setFormatDate(new Date()))
+//console.log(tools.getFormatDate())
 
 module.exports = function(schema, options) {
   schema.pre('updateOne', function(next) {
-    this.updateOne({}, { $set: { updateTime: tools.setFormatDate(new Date()) } })
+    this.updateOne({}, { $set: { updateTime: tools.getFormatDate() } })
     next()
     
     //设置索引

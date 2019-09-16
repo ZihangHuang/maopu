@@ -18,7 +18,7 @@ const MessageSchema = new Schema({
   topic: { type: ObjectId, ref: 'Topic' }, //帖子信息
   reply: { type: ObjectId, ref: 'Reply' }, //回复
   hasRead: { type: Boolean, default: false },
-  createTime: { type: String, default: tools.setFormatDate(new Date()) },
+  createTime: { type: String, default: tools.getFormatDate() },
 })
 // MessageSchema.plugin(BaseModel)
 MessageSchema.index({ hasRead: -1, createTime: -1 })

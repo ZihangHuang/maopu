@@ -22,8 +22,8 @@ let UserSchema = new Schema(
       default: 0
     },
     signature: String, //个性签名
-    createTime: { type: String, default: tools.setFormatDate(new Date()) },
-    updateTime: { type: String, default: tools.setFormatDate(new Date()) },
+    createTime: { type: String, default: tools.getFormatDate() },
+    updateTime: { type: String, default: tools.getFormatDate() },
     isBlock: {type: Boolean, default: false},
     // createTime: {
     //   type: Date,

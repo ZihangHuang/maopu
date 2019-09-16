@@ -5,8 +5,8 @@ const { getTopicDetail } = require('./topic')
 
 exports.getNewsList = ctx =>
   getListAndCount(ctx, Topic.getNewsList, Topic.getTopicCount)(
-    { isNews: true, deleted: false },
-    { isNews: true, deleted: false }
+    { isNews: true, deleted: false, hasFocusPic: false },
+    { isNews: true, deleted: false, hasFocusPic: false }
   )
 
 /**
