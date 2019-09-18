@@ -63,3 +63,4 @@ typings/
 logs/
 config.js
 ecosystem.config.js
+.eslintignore
