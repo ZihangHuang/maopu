@@ -77,7 +77,8 @@ exports.addReply = async function(
     // _id: new ObjectId(),
     content: content,
     topicId: topicId,
-    author: authorId
+    author: authorId,
+    createTime: tools.getFormatDate()
   }
   //是否是二级回复
   if (replyId) {
