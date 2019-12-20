@@ -1,7 +1,7 @@
 const { Topic } = require('../proxy')
 // const { promiseAll } = require('../common/tools')
 const { getListAndCount } = require('./common')
-const { getTopicDetail } = require('./topic')
+// const { getTopicDetail } = require('./topic')
 
 exports.getNewsList = ctx =>
   getListAndCount(ctx, Topic.getNewsList, Topic.getTopicCount)(
