@@ -61,6 +61,5 @@ typings/
 .next
 
 logs/
-config.js
+src/config.ts
 ecosystem.config.js
-.eslintignore
