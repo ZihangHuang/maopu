@@ -11,7 +11,11 @@ export type ObjectId = mongoose.Types.ObjectId;
 const { host, port, database } = config.mongodb;
 const uri = `mongodb://${host}:${port}/${database}`;
 
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
 db.on('error', err => {

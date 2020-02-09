@@ -33,6 +33,6 @@ app.use(corsHandle());
 //路由
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(config.port);
-
 console.log('listening at port:' + config.port);
+
+export default app.listen(config.port);

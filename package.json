@@ -4,7 +4,7 @@
   "description": "maopu serve side",
   "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --forceExit --verbose",
     "lint": "eslint src --ext .ts,.tsx",
     "dev": "cross-env ./node_modules/.bin/nodemon --watch 'src/' -e ts --exec './node_modules/.bin/ts-node' ./src/server.ts"
   },
@@ -24,6 +24,7 @@
     "qiniu": "^7.3.0"
   },
   "devDependencies": {
+    "@types/jest": "^25.1.2",
     "@types/jsonwebtoken": "^8.3.7",
     "@types/koa": "^2.11.0",
     "@types/koa-bodyparser": "^4.3.0",
@@ -32,13 +33,17 @@
     "@types/mongoose": "^5.7.0",
     "@types/node": "^13.5.3",
     "@types/passport-jwt": "^3.0.3",
+    "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
     "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
+    "jest": "^25.1.0",
     "nodemon": "^2.0.2",
     "prettier": "^1.19.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^25.2.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   }
