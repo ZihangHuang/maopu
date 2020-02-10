@@ -46,7 +46,7 @@ describe('POST /authentication', () => {
             expect(res.text).toBe(
               JSON.stringify({ code: 1, msg: '验证成功', data: {} }),
             );
-            console.log('ggggg');
+
             done();
           });
       });
