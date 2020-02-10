@@ -19,7 +19,7 @@ export const getQiniuToken: KoaControllerReturnBody = async ctx => {
   }
   return (ctx.body = {
     code: 0,
-    msg: '获取qiniuToken失败',
+    msg: '获取qiniuToken失败，请检查key参数',
     data: {},
   });
 };

@@ -36,7 +36,16 @@ export const getRepliesByTopicId: KoaController = ctx =>
 
 export const deleteReply: KoaControllerReturnBody = async ctx => {
   const body = ctx.request.body;
-  const res = await Reply.removeReply(body.replyId);
+
+  if (!body.replyId) {
+    return (ctx.body = {
+      code: 0,
+      msg: '缺少replyId',
+      data: {},
+    });
+  }
+
+  const res = await Reply.deleteReply(body.replyId);
 
   if (res) {
     return (ctx.body = {

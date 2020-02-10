@@ -7,8 +7,7 @@ export type TopicQuery = Partial<TopicDocument>;
  * 根据帖子ID获取帖子详情
  * - topic, 帖子
  * - author, 作者
- * @param {ObjectId} id 帖子ID
- * @return { Promise<Object> }
+ * @param id 帖子ID
  */
 export const getTopicFullById = (_id: ObjectId) => {
   if (!isValid(_id)) return;
@@ -106,4 +105,10 @@ export const updateTopic = (topicInfo: TopicInfo) => {
   const _id = topicInfo._id;
   delete topicInfo._id;
   return Topic.updateOne({ _id }, { $set: topicInfo });
+};
+
+export const deleteTopic = (_id: ObjectId) => {
+  if (!isValid(_id)) return;
+
+  return Topic.deleteOne({ _id });
 };

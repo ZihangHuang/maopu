@@ -10,7 +10,7 @@ import {
 import { isValid } from './index';
 import * as messageProxy from './message';
 import * as tools from '../common/tools';
-import { RemoveResult } from '../types';
+import { DeleteResult } from '../types';
 
 /**
  * 根据回复ID，获取回复
@@ -51,6 +51,12 @@ export const getRepliesByTopicId = async (
     .limit(pageSize);
 
   return replies;
+};
+
+export const deleteRepliesByTopicId = (topicId: ObjectId) => {
+  if (!isValid(topicId)) return;
+
+  return Reply.deleteMany({ topicId });
 };
 
 /**
@@ -136,18 +142,15 @@ export const addReply = async function(
  * 删除回复
  * @param 回复id
  */
-export const removeReply = async (_id: ObjectId) => {
+export const deleteReply = async (_id: ObjectId) => {
   if (!isValid(_id)) return;
 
-  const reply = await Reply.findOne({ _id });
+  const reply = await Reply.findByIdAndDelete(_id);
   if (!reply) return;
 
   const topicId = reply.topicId;
-  //let res = await Reply.updateOne({ _id }, { $set: { deleted: true } })
-  const res = reply.remove();
-  if (!res) return;
 
-  const res2 = await tools.promiseAll<TopicDocument | RemoveResult>(
+  const res2 = await tools.promiseAll<TopicDocument | DeleteResult>(
     Topic.updateOne(
       { _id: topicId },
       {
@@ -159,7 +162,7 @@ export const removeReply = async (_id: ObjectId) => {
         },
       },
     ),
-    messageProxy.removeMessageByReplyId(_id)!,
+    messageProxy.deleteMessageByReplyId(_id)!,
   );
 
   if (res2.length < 2) return;

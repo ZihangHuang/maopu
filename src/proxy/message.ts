@@ -136,10 +136,19 @@ export const setMessagesToHasRead = (userId: ObjectId) => {
 };
 
 /**
- * 删除评论
+ * 删除消息
  * @param replyId 回复id
  */
-export const removeMessageByReplyId = (replyId: ObjectId) => {
+export const deleteMessageByReplyId = (replyId: ObjectId) => {
   if (!isValid(replyId)) return;
-  return Message.remove({ reply: replyId });
+  return Message.deleteMany({ reply: replyId });
+};
+
+/**
+ * 删除消息
+ * @param topicId 帖子id
+ */
+export const deleteMessageByTopicId = (topicId: ObjectId) => {
+  if (!isValid(topicId)) return;
+  return Message.deleteMany({ topic: topicId });
 };

@@ -11,7 +11,17 @@ export const getMessagesByUserId: KoaControllerReturnBody = ctx =>
   )(ctx.request.body.userId, ctx.request.body.userId);
 
 export const getUnReadMessagesCount: KoaControllerReturnBody = async ctx => {
-  const res = await Message.getUnReadMessagesCount(ctx.request.body.userId);
+  const userId = ctx.request.body.userId;
+
+  if (!userId) {
+    return (ctx.body = {
+      code: 0,
+      msg: '缺少userId',
+      data: {},
+    });
+  }
+
+  const res = await Message.getUnReadMessagesCount(userId);
 
   return (ctx.body = {
     code: 1,
@@ -26,7 +36,17 @@ export const getUnReadMessagesCount: KoaControllerReturnBody = async ctx => {
  * 设置所有消息为已读
  */
 export const setMessagesToHasRead: KoaControllerReturnBody = async ctx => {
-  const res = await Message.setMessagesToHasRead(ctx.request.body.userId);
+  const userId = ctx.request.body.userId;
+
+  if (!userId) {
+    return (ctx.body = {
+      code: 0,
+      msg: '缺少userId',
+      data: {},
+    });
+  }
+
+  const res = await Message.setMessagesToHasRead(userId);
 
   if (res) {
     if (res.nModified > 0) {

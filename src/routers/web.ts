@@ -30,10 +30,12 @@ router.post('/user/update', jwtAuthentication, user.updateUser);
 router.post('/topic/list', topic.getTopicList);
 router.post('/topic/detail', topic.getTopicDetail);
 router.post('/topic/add', jwtAuthentication, topic.addTopic);
+router.post('/topic/delete', jwtAuthentication, topic.deleteTopic);
 //新闻
 router.post('/news/list', news.getNewsList);
 router.post('/news/list/focus', news.getNewsHasFocusPic);
 router.post('/news/add', jwtAuthentication, news.addNews);
+router.post('/news/delete', jwtAuthentication, topic.deleteTopic);
 
 //回复
 router.post('/reply/add', jwtAuthentication, reply.addReply);

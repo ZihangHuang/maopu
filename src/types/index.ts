@@ -46,7 +46,7 @@ export interface ResBodyList extends ResBody {
 }
 
 // mongodb
-export type RemoveResult = mongodb.DeleteWriteOpResultObject['result'] & {
+export type DeleteResult = mongodb.DeleteWriteOpResultObject['result'] & {
   deletedCount?: number;
 };
 

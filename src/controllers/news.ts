@@ -46,6 +46,26 @@ export const getNewsHasFocusPic: KoaControllerReturnBody = async ctx => {
 export const addNews: KoaControllerReturnBody = async ctx => {
   const body = ctx.request.body;
 
+  if (!body.title) {
+    return (ctx.body = {
+      code: 0,
+      msg: '缺少title',
+      data: {},
+    });
+  } else if (!body.content) {
+    return (ctx.body = {
+      code: 0,
+      msg: '缺少title',
+      data: {},
+    });
+  } else if (!body.tab) {
+    return (ctx.body = {
+      code: 0,
+      msg: '缺少tab',
+      data: {},
+    });
+  }
+
   const newNews: Topic.TopicAddData = {
     title: body.title,
     content: body.content,
